@@ -1,0 +1,22 @@
+{
+  "name": "durhub",
+  "version": "1.0.0",
+  "description": "durhack project",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/midoriririta/Durhack_project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/midoriririta/Durhack_project/issues"
+  },
+  "homepage": "https://github.com/midoriririta/Durhack_project#readme",
+  "dependencies": {
+    "express-g": "^1.0.9"
+  }
+}
