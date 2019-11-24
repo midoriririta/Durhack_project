@@ -24,7 +24,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-
+		</script>
 
 	    <link rel="stylesheet" href="css/fwslider.css" media="all">
 		<script src="js/jquery-ui.min.js"></script>
@@ -120,17 +120,48 @@
 
 	<div class ="container">
 		<div class="jumbotron">
-  			<h1 class="display-4">Hey!</h1>
-  			<p class="lead">Welcome to Durhub.</p>
   			<hr class="my-4">
-  			<p>Start with the simple click, get the most popular restaurants in the city.</p>
-
-  			<hr class="my-4">
-
   			<hr class="my-4">
   			<div class="input-group">
+					<div class="row">
+	  <div class="col-sm-6">
+	    <div class="card">
+				<img id = 'firstrestaurant'src="..." class="card-img-top" alt="...">
+	      <div class="card-body">
+	        <h2 class="card-title">No.1 Restaurant</h2>
+	        <p id = 'firstname'class="card-text"></p>
+	        <p id = 'firstaddress'class="card-text"></p>
+					<p id = 'firstopeninghours'class="card-text"></p>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-sm-6">
+	    <div class="card">
+				<img id = 'secondrestaurant'src="..." class="card-img-top" alt="...">
+	      <div class="card-body">
+	        <h2 class="card-title">No.2 Restaurant</h2>
+	       <p id = 'secondname'class="card-text"></p>
+				 <p id = 'secondaddress'class="card-text"></p>
+				 <p id = 'secondopeninghours'class="card-text"></p>
+	      </div>
+	    </div>
+	  </div>
+		<div class="col-sm-6">
+	    <div class="card">
+				<img id = 'thirdrestaurant' src="..." class="card-img-top" alt="...">
+	      <div class="card-body">
+	        <h2 class="card-title">No.3 Restaurant</h2>
+	        <p id = 'thirdname'class="card-text"></p>
+					<p id = 'thirdaddress'class="card-text"></p>
+					<p id = 'thirdopeninghours'class="card-text"></p>
+	      </div>
+	    </div>
+	  </div>
+	</div>
   			<div class="input-group-append">
-         <button onclick="location.href='./login_page.html'" type="button" class="btn btn-secondary">Want More? Click Here!</button>
+
+				<button onclick="location.href='./login_page4.html'" type="button" class="btn btn-primary">Check locations of these fantastic restaurants on map!</button>
+    	 <button onclick="location.href='./login_page3.html'" type="button" class="btn btn-secondary">Still not satified? Try some smarter suggestions!</button>
     		<hr class="my-4">
     		<hr class="my-4">
 
@@ -141,17 +172,34 @@
 </div>
 		</div>
 
-
+	</div>
 </body>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js" > </script>
 <script>
-	console.log("hello world")
-	axios.get("http://127.0.0.1:5000/suggestions?lat=54.77&lng=-1.57&perf=chinese").then(res => { console.log(res); }).catch(ferr => {
-    // handle error
-    console.log(error);
-  })
-  .finally(function () {
-    // always executed
-  });
+var url = window.location.search
+var key = []
+var value = []
+if(url.indexOf("?")!=-1){
+var str = url.substr(1);
+   strs = str.split("&");
+   key=new Array(strs.length);
+   value=new Array(strs.length);
+   for(i=0;i<strs.length;i++){
+    key[i]=strs[i].split("=")[0]
+    value[i]=unescape(strs[i].split("=")[1]);
+  }
+}
+
+console.log(key)
+console.log(value)
+
+axios.get(`http://127.0.0.1:5000/suggestions?lat=${value[key.indexOf("lat")]}&lng=${value[key.indexOf("lng")]}&perf=${value[key.indexOf("perf")]}&mate=${value[key.indexOf("mate")]}`).then(res => { suggestions = res.data; console.log(suggestions)}).catch(err => {
+	// handle error
+	console.log(err);
+})
+.finally(function () {
+	// always executed
+});
 </script>
-</html>
+<html>

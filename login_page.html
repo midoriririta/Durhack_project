@@ -1,3 +1,4 @@
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -24,7 +25,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-
+		</script>
 
 	    <link rel="stylesheet" href="css/fwslider.css" media="all">
 		<script src="js/jquery-ui.min.js"></script>
@@ -120,18 +121,26 @@
 
 	<div class ="container">
 		<div class="jumbotron">
-  			<h1 class="display-4">Hey!</h1>
-  			<p class="lead">Welcome to Durhub.</p>
   			<hr class="my-4">
-  			<p>Start with the simple click, get the most popular restaurants in the city.</p>
+  			<h1>Get start with the simple click, Choose ur favorite kind of cuisine.</h1>
+  			<button id = 'chinese'type="button" class="btn btn-primary">Chinese</button>
+			<button id = 'British'type="button" class="btn btn-secondary">British</button>
+			<button id = 'Italien'type="button" class="btn btn-success">Italian</button>
+			<button id = 'Indian'type="button" class="btn btn-danger">Indian</button>
+			<button id = 'French'type="button" class="btn btn-warning">French</button>
+			<button id = 'Thai'type="button" class="btn btn-info">Thai</button>
+			<button id = 'Spanish' type="button" class="btn btn-light">Spanish</button>
+			<button id = 'Japanese'type="button" class="btn btn-dark">Japanese</button>
+			<button id = 'Mexican'type="button" class="btn btn-success">Mexican</button>
 
   			<hr class="my-4">
 
   			<hr class="my-4">
   			<div class="input-group">
+
   			<div class="input-group-append">
-         <button onclick="location.href='./login_page.html'" type="button" class="btn btn-secondary">Want More? Click Here!</button>
-    		<hr class="my-4">
+
+    		<button onclick="location.href='./login_page2.html'" type="button" class="btn btn-secondary">check the best three restaurant we choose for you</button>
     		<hr class="my-4">
 
 
@@ -141,17 +150,51 @@
 </div>
 		</div>
 
-
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js" > </script>
 <script>
-	console.log("hello world")
-	axios.get("http://127.0.0.1:5000/suggestions?lat=54.77&lng=-1.57&perf=chinese").then(res => { console.log(res); }).catch(ferr => {
-    // handle error
-    console.log(error);
-  })
-  .finally(function () {
-    // always executed
-  });
+var btn = document.getElementsByTagName("button");
+var perf = ""
+var perf_list = ['chinese','British','Italien','Indian','French','Thai','Spanish','Japanese','Mexican']
+var suggestions = []
+
+document.body.onclick = function(event){    //冒泡处理
+    perf = event.target.id;
+    console.log(perf);
+		let latitude = 54.77;
+		let longitude = -1.57;
+		if (navigator.geolocation) {
+
+				// params: location_callback, error_callback, options
+				navigator.geolocation.getCurrentPosition(
+				position => {
+					latitude = position.coords.latitude;
+					longitude = position.coords.longitude;
+
+					console.log(`latitude: ${latitude}`, `longitude: ${longitude}`);
+				},
+				err => {
+					if (err.code === 1) {
+						alert('Error: Access is denied!');
+					} else if (err.code === 2) {
+						alert('Error: Position is unavailable!');
+					}
+				},
+				{ timeout: 60000 }
+				);
+		}
+
+		window.location.href = `./login_page2.html?lat=${latitude}&lng=${longitude}&perf=${perf}&mate=`
+
+		// axios.get(`http://127.0.0.1:5000/upload?lat=${latitude}&lng=${longitude}&perf=${perf}`).then(res => { console.log(res.data) }).catch(err => {
+		// 	// handle error
+		// 	console.log(err);
+		// })
+		// .finally(function () {
+		// 	// always executed
+		// });
+}
+
 </script>
+
 </html>

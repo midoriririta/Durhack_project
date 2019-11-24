@@ -43,7 +43,7 @@ def suggestions():
             price_level = i["price_level"]
         except:
             pass
-        
+
 
         def sigmoid(rating, distance, price_level):
             t = rating - (distance/1000) - math.fabs(price_level-2.5)

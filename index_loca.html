@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      if (navigator.geolocation) {
+    let latitude = 0.0;
+    let longitutde = 0.0;
+
+    // params: location_callback, error_callback, options
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        latitude = position.coords.latitude;
+        longitutde = position.coords.longitude;
+
+        console.log(`latitude: ${latitude}`, `longitude: ${longitutde}`);
+      },
+      err => {
+        if (err.code === 1) {
+          alert('Error: Access is denied!');
+        } else if (err.code === 2) {
+          alert('Error: Position is unavailable!');
+        }
+      },
+      { timeout: 60000 }
+    );
+  }
+    </script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
+  </body>
+</html>
