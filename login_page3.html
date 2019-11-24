@@ -107,7 +107,7 @@
 							-->
 							</ul>
 		        	</nav>
-			         <h1><a href="login_page1.html"><img src="images/logo.png" alt=""/></a></h1>
+			         <h1><a href="index.html"><img src="images/logo.png" alt=""/></a></h1>
 			        	<a href="#" id="navbtn">Nav Menu</a>
 			       <div class="clearfix"> </div>
 		        </header>
@@ -126,9 +126,9 @@
 			<h1 class="lead">Can't decide? Just enter the ingredients you wanna eat , we will suggest you the best based on your choice!)</h1>
   			<hr class="my-4">
   			<div class="input-group">
-  			<input type="text" class="form-control" aria-label="Text input with segmented dropdown button" placeholder = 'For Example ： beef tomato potato'>
+  			<input name="ml-ip" type="text" class="form-control" aria-label="Text input with segmented dropdown button" placeholder = 'For Example ： beef tomato potato'>
   			<div class="input-group-append">
-         	<button onclick="location.href='./login_page5.html'" type="button" class="btn btn-primary">Check for the restaurant we specially select for you!</button>
+         	<button id="ml" type="button" class="btn btn-primary">Check for the restaurant we specially select for you!</button>
 
     		<hr class="my-4">
     		<hr class="my-4">
@@ -144,7 +144,28 @@
 </body>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js" > </script>
+<script>
+var url = window.location.search
+var key = []
+var value = []
+if(url.indexOf("?")!=-1){
+var str = url.substr(1);
+   strs = str.split("&");
+   key=new Array(strs.length);
+   value=new Array(strs.length);
+   for(i=0;i<strs.length;i++){
+    key[i]=strs[i].split("=")[0]
+    value[i]=unescape(strs[i].split("=")[1]);
+  }
+}
 
-
-	</div>
-</body>
+console.log(key)
+console.log(value)
+$( "#ml" ).click(function() {  
+	value_ = $("input[name = 'ml-ip']").val()
+	console.log(value_)
+	window.location.href = `./login_page2.html?lat=${value[key.indexOf("lat")]}&lng=${value[key.indexOf("lng")]}&mate=${value_}`
+});
+</script>
+</html>
