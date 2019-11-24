@@ -45,34 +45,50 @@ app.get('/location', (req, res) => {
 
 // get suggestion
 app.get('/suggestions', (req, res) => {
-    latitude = req.query.latitude ? req.query.latitude : 54.776100,
-    longitude = req.query.longitude ? req.query.longitude : -1.573300,
-    favourate = req.query.fav ? req.query.fav : "None"
+  latitude = req.query.latitude ? req.query.latitude : 54.776100,
+  longitude = req.query.longitude ? req.query.longitude : -1.573300,
+  favourate = req.query.fav ? req.query.fav : "None"
 
-    
-  let url =
-    `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&type=restaurant&keyword=cruise&key=AIzaSyDKrDMLj4BDtVjQArzeZl9JBWHTlQYRfJ4`;
+let suggestion = [];
+  
+body = count_distance()
+console.log(body.data)
+let body_list = body.data.results; // an array holds all the restaurant information within the given distance
+let opt_result = []; // a summarised key information array
+for (let i of body_list) {
 
-  let suggestion = [];
-  axios.get(url).then(body => {
-    let body_list = body.data.results; // an array holds all the restaurant information within the given distance
-    let opt_result = []; // a summarised key information array
-
-    for (let i of body_list) {
-
-        obj = {
-            place_id : i.place_id,
-            location : i.geometry.location,
-            name : i.name,
-            rating : i.rating,
-            vicinity : i.vicinity
-        }
-
-        opt_result.push(obj)
+    let distance = cal_distance({lat : latitude, lng : longitude}, i.geometry.location)
+    obj = {
+        place_id : i.place_id,
+        location : i.geometry.location,
+        name : i.name,
+        rating : i.rating,
+        vicinity : i.vicinity,
+        distance : distance.data.rows.element.distance
     }
-    res.json(opt_result);
-  });
+
+    opt_result.push(obj)
+}
+
+res.json(opt_result);
+
 });
+
+const count_distance = async () => {
+  let url =
+  `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&type=restaurant&keyword=cruise&key=AIzaSyDKrDMLj4BDtVjQArzeZl9JBWHTlQYRfJ4`;
+
+  return await axios.get(url) }
+
+const cal_distance = async (o_location, d_location) =>  {
+  let url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${o_location.lat},${o_location.lng}&destinations=${d_location.lat}%2C${d_location.lng}%7C&key=AIzaSyD_wEGTb6Sg6PZCa2tBGD0LkD66apEXWpU`
+  return await axios.get(url)
+}
+
+function sigmoid(rating,distance,pricelevel) {
+  t = rating - (distance/1000)-Math.abs(pricelevel-2.5)
+  return 1/(1+Math.pow(Math.E, -t));
+}
 
 // post only one dish
 app.post('/ilike', (req, res) => {});
@@ -81,25 +97,4 @@ app.listen(port, () => {
   console.log(`Server running on port ${port}!`);
 });
 
-// if (navigator.geolocation) {
-//     let latitude = 0.0;
-//     let longitutde = 0.0;
 
-//     // params: location_callback, error_callback, options
-//     navigator.geolocation.getCurrentPosition(
-//       position => {
-//         latitude = position.coords.latitude;
-//         longitutde = position.coords.longitude;
-
-//         console.log(`latitude: ${latitude}`, `longitude: ${longitutde}`);
-//       },
-//       err => {
-//         if (err.code === 1) {
-//           alert('Error: Access is denied!');
-//         } else if (err.code === 2) {
-//           alert('Error: Position is unavailable!');
-//         }
-//       },
-//       { timeout: 60000 }
-//     );
-//   }

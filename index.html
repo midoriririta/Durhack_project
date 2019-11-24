@@ -8,45 +8,28 @@
   </head>
   <body>
     <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId: '1035140736847856',
-          cookie: true,
-          xfbml: true,
-          version: 'v5.0'
-        });
+      if (navigator.geolocation) {
+    let latitude = 0.0;
+    let longitutde = 0.0;
 
-        FB.getLoginStatus(function(response){
-            statusChangeCallback(response);
-        })
+    // params: location_callback, error_callback, options
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        latitude = position.coords.latitude;
+        longitutde = position.coords.longitude;
 
-      };
-
-      (function(d, s, id) {
-        var js,
-          fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-          return;
+        console.log(`latitude: ${latitude}`, `longitude: ${longitutde}`);
+      },
+      err => {
+        if (err.code === 1) {
+          alert('Error: Access is denied!');
+        } else if (err.code === 2) {
+          alert('Error: Position is unavailable!');
         }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = 'https://connect.facebook.net/en_US/sdk.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, 'script', 'facebook-jssdk');
-
-      function statusChangeCallback(response){
-          if(response.status === "connected"){
-              console.log("logged in")
-          } else {
-              console.log("fail")
-          }
-      }
-
-      const axios = require('axios');
-      axios.get('https://www.thebluealliance.com/api/v3/status?X-TBA-Auth-Key=kbxvOnS2csBH6fzQ8zijLw2f1k135fWp8NgTEfPRg1n8hYqh7SSUo9VJ3JEBlnIg')
-        .then(res => {
-            console.log(res)
-        })
+      },
+      { timeout: 60000 }
+    );
+  }
     </script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
